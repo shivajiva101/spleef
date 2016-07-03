@@ -12,31 +12,36 @@ local rpos ={}
 minetest.register_chatcommand("spleef_add", {
 	params = "<name>",
 	description = "Adds a spleef arena to the list",
-	privs = { server = true },
+	privs = {server=true},
+	
 	func = function(name, param)
+		
 		if param == "" then
 			return false, "Invalid usage, see /help protect."
 		end
-		-- return if name is used
+		
+		-- return if name already in use
 		if spleef.arena[param] then
 		    minetest.chat_send_player(name, param.." is already assigned in the spleef arena list")
 		    return
 		  end
 		end
-		-- check area is selected
+		
+		-- check area has been selected
 		local pos1, pos2 = spleef:getPos(name)
 		if not (pos1 and pos2) then
 			return false, "You need to select an area first."
 		end
-		-- save schematic of the selected area
-		minetest.create_schematic(pos1, pos2, {}, schempath.."/"..param..".mts")
 		
-		-- add arena name and pos1 to table
-		spleef.arena[param] = {x=pos1.x, y=pos1.y, z=pos1.z}
-		-- save data to file
-		save_data()
-		-- confirm action to player
-		minetest.chat_send_player(name, "You added "..param.." to the spleef arena list")
+		-- save schematic of area
+		If minetest.create_schematic(pos1, pos2, {}, schempath.."/"..param..".mts") == nil then
+		  minetest.chat_send_player(name, "Failed to create "..param.." schematic file")
+		else
+		  spleef.arena[param] = {x=pos1.x, y=pos1.y, z=pos1.z} -- add arena name and pos1 to table
+		  save_data() -- save data to file
+		  minetest.chat_send_player(name, "You added "..param.." to the spleef arena list") -- confirm action to player
+		end
+		
 	end,
 
 
@@ -44,6 +49,7 @@ minetest.register_chatcommand("spleef_add", {
 
 -- Add gui
 function add_gui(name)
+	
 	minetest.show_formspec(name, "spleef:form",
 	"size[4,3]"..
 	"label[0,0;Spleef Arena]"..
@@ -54,10 +60,12 @@ end
 
 -- Register callback
 minetest.register_on_player_receive_fields(function(player, formname, fields)
+	
 	if formname ~= "spleef:form" then
 		-- exit callback.
 		return false
 	end
+	
 	-- Store name in metadata for node
 	if fields.name then
 	  local meta = minetest.get_meta(rpos)
@@ -69,11 +77,14 @@ end)
 
 -- Momentary Button action
 spleef.button_turnoff = function (pos)
+	
 	local node = minetest.get_node(pos)
+	
 	if node.name=="spleef:button_on" then --has not been dug
 		minetest.swap_node(pos, {name = "spleef:button_off", param2=node.param2})
 		minetest.sound_play("button_pop", {pos=pos})
 	end
+	
 end
 
 -- Register nodes --
@@ -106,6 +117,7 @@ minetest.register_node("spleef:button_off", {
 	},
 	groups = {unbreakable = 1, not_in_creative_inventory = 1},
 	description = "Spleef Button",
+	
 	on_punch = function (pos, node, puncher)
 		minetest.swap_node(pos, {name = "spleef:button_on", param2=node.param2})
 		minetest.sound_play("button_push", {pos=pos})
@@ -121,12 +133,13 @@ minetest.register_node("spleef:button_off", {
 		    end
 		  end
 	end,
+	
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
-	-- show the gui
-	local name = placer:get_player_name()
-	rpos = pos
-	add_gui(name)
+		local name = placer:get_player_name()
+		rpos = pos
+		add_gui(name) -- show the gui
 	end,
+	
 	sounds = default.node_sound_stone_defaults(),
 })
 
