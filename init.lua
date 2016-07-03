@@ -127,9 +127,9 @@ minetest.register_node("spleef:button_off", {
 		  if spleef.arena[name] then
 		    local pos = { x=spleef.arena[name].x, y=spleef.arena[name].y, z=spleef.arena[name].z }
 		    if minetest.place_schematic(pos, schempath.."/"..name..".mts") == nil then
-		      minetest.chat_send_player(puncher:get_player_name(), "Failed to reset "..name.." arena!")
+		      minetest.chat_send_player(puncher:get_player_name(), "Failed to reset "..name.." spleef arena!")
 		    else
-		      minetest.chat_send_player(puncher:get_player_name(), name.." reset!")
+		      minetest.chat_send_player(puncher:get_player_name(), name.." spleef arena reset!")
 		    end
 		  end
 	end,
