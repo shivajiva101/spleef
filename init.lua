@@ -34,7 +34,7 @@ minetest.register_chatcommand("spleef_add", {
 		end
 		
 		-- save schematic of area
-		If minetest.create_schematic(pos1, pos2, {}, schempath.."/"..param..".mts") == nil then
+		if minetest.create_schematic(pos1, pos2, {}, schempath.."/"..param..".mts") == nil then
 		  minetest.chat_send_player(name, "Failed to create "..param.." schematic file")
 		else
 		  spleef.arena[param] = {x=pos1.x, y=pos1.y, z=pos1.z} -- add arena name and pos1 to table
