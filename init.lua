@@ -42,6 +42,7 @@ minetest.register_chatcommand("spleef_add", {
 		end
 		
 	end,
+})
 
 minetest.register_chatcommand("spleef_remove", {
 	params = "<name>",
@@ -66,8 +67,6 @@ minetest.register_chatcommand("spleef_remove", {
 		  minetest.chat_send_player(name, param.." doesn't exist!")
 		end		
 	end,
-
-
 })
 
 minetest.register_chatcommand("spleef_list", {
@@ -85,9 +84,6 @@ minetest.register_chatcommand("spleef_list", {
 		end
 		return true, table.concat(arenaStrings, "\n")
 	end,
-})
-
-
 })
 
 -- Add gui
