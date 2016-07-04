@@ -17,12 +17,12 @@ minetest.register_chatcommand("spleef_add", {
 	func = function(name, param)
 		
 		if param == "" then
-			return false, "Invalid usage, see /help protect."
+			return false, "Invalid usage, see /help spleef_add."
 		end
 		
 		-- return if name already in use
 		if spleef.arena[param] then
-		    minetest.chat_send_player(name, param.." is already assigned in the spleef arena list")
+		    minetest.chat_send_player(name, param.." is already assigned!")
 		    return
 		end
 		
@@ -72,7 +72,9 @@ minetest.register_chatcommand("spleef_remove", {
 
 minetest.register_chatcommand("spleef_list", {
 	params = "", 
-	description = "List arenas.",
+	description = "List spleef arenas.",
+	privs = {server=true},
+	
 	func = function(name)
 		local arenaStrings = {}
 		for key, value in pairs(spleef.arena) do
