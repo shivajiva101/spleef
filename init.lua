@@ -24,7 +24,6 @@ minetest.register_chatcommand("spleef_add", {
 		if spleef.arena[param] then
 		    minetest.chat_send_player(name, param.." is already assigned in the spleef arena list")
 		    return
-		  end
 		end
 		
 		-- check area has been selected
