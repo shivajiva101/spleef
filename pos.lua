@@ -1,67 +1,45 @@
 
--- /spleef_pos{1,2} [X Y Z|X,Y,Z].
--- Since this is copied from WorldEdit it is licensed under the AGPL.
+-- /spleef_pos set/set1/set2/get
+-- Since this is copied from Areas which copies WorldEdit it is licensed under the AGPL.
 
 spleef.marker1 = {}
 spleef.marker2 = {}
+spleef.set_pos = {}
 spleef.pos1 = {}
 spleef.pos2 = {}
 
-minetest.register_chatcommand("spleef_pos1", {
-	params = "[X Y Z|X,Y,Z]",
-	description = "Set spleef arena position 1 to your"
-		.." location or the coordinates specified",
-	privs = { server = true },
+minetest.register_chatcommand("spleef_pos", {
+	params = "set/set1/set2/get",
+	description = "Set spleef floor region, position 1, or position 2"
+		.." by punching nodes, or display the region",
 	func = function(name, param)
-		local pos = nil
-		local found, _, x, y, z = param:find(
-				"^(-?%d+)[, ](-?%d+)[, ](-?%d+)$")
-		if found then
-			pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
-		elseif param == "" then
-			local player = minetest.get_player_by_name(name)
-			if player then
-				pos = player:getpos()
+		if param == "set" then -- Set both area positions
+			spleef.set_pos[name] = "pos1"
+			return true, "Select positions by punching two nodes."
+		elseif param == "set1" then -- Set area position 1
+			spleef.set_pos[name] = "pos1only"
+			return true, "Select position 1 by punching a node."
+		elseif param == "set2" then -- Set area position 2
+			spleef.set_pos[name] = "pos2"
+			return true, "Select position 2 by punching a node."
+		elseif param == "get" then -- Display current area positions
+			local pos1str, pos2str = "Position 1: ", "Position 2: "
+			if spleef.pos1[name] then
+				pos1str = pos1str..minetest.pos_to_string(spleef.pos1[name])
 			else
-				return false, "Unable to get position."
+				pos1str = pos1str.."<not set>"
 			end
+			if spleef.pos2[name] then
+				pos2str = pos2str..minetest.pos_to_string(spleef.pos2[name])
+			else
+				pos2str = pos2str.."<not set>"
+			end
+			return true, pos1str.."\n"..pos2str
 		else
-			return false, "Invalid usage, see /help spleef_pos1."
+			return false, "Unknown subcommand: "..param
 		end
-		pos = vector.round(pos)
-		spleef:setPos1(name, pos)
-		return true, "Spleef arena position 1 set to "
-				..minetest.pos_to_string(pos)
 	end,
 })
-
-minetest.register_chatcommand("spleef_pos2", {
-	params = "[X Y Z|X,Y,Z]",
-	description = "Set spleef arena position 2 to your"
-		.." location or the coordinates specified",
-	func = function(name, param)
-		local pos = nil
-		local found, _, x, y, z = param:find(
-				"^(-?%d+)[, ](-?%d+)[, ](-?%d+)$")
-		if found then
-			pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
-		elseif param == "" then
-			local player = minetest.get_player_by_name(name)
-			if player then
-				pos = player:getpos()
-			else
-				return false, "Unable to get position."
-			end
-		else
-			return false, "Invalid usage, see /help spleef_pos2."
-		end
-		pos = vector.round(pos)
-		spleef:setPos2(name, pos)
-		return true, "Spleef arena position 2 set to "
-				..minetest.pos_to_string(pos)
-	end,
-})
-
 
 function spleef:getPos(playerName)
 	local pos1, pos2 = spleef.pos1[playerName], spleef.pos2[playerName]
@@ -109,6 +87,35 @@ spleef.markPos2 = function(name)
 		spleef.marker2[name]:get_luaentity().active = true
 	end
 end
+
+minetest.register_on_punchnode(function(pos, node, puncher)
+	local name = puncher:get_player_name()
+	-- Currently setting position
+	if name ~= "" and spleef.set_pos[name] then
+		if spleef.set_pos[name] == "pos1" then
+			spleef.pos1[name] = pos
+			spleef.markPos1(name)
+			spleef.set_pos[name] = "pos2"
+			minetest.chat_send_player(name,
+					"Position 1 set to "
+					..minetest.pos_to_string(pos))
+		elseif spleef.set_pos[name] == "pos1only" then
+			spleef.pos1[name] = pos
+			spleef.markPos1(name)
+			spleef.set_pos[name] = nil
+			minetest.chat_send_player(name,
+					"Position 1 set to "
+					..minetest.pos_to_string(pos))
+		elseif spleef.set_pos[name] == "pos2" then
+			spleef.pos2[name] = pos
+			spleef.markPos2(name)
+			spleef.set_pos[name] = nil
+			minetest.chat_send_player(name,
+					"Position 2 set to "
+					..minetest.pos_to_string(pos))
+		end
+	end
+end)
 
 -- Modifies positions `pos1` and `pos2` so that each component of `pos1`
 -- is less than or equal to its corresponding component of `pos2`,
