@@ -44,6 +44,48 @@ minetest.register_chatcommand("spleef_add", {
 		
 	end,
 
+minetest.register_chatcommand("spleef_remove", {
+	params = "<name>",
+	description = "Removes a spleef arena from the list",
+	privs = {server=true},
+	
+	func = function(name, param)
+		
+		if param == "" then
+			return false, "Invalid usage, see /help spleef_remove."
+		end
+
+		-- remove entry
+		if spleef.arena[param] then
+		  spleef.arena[param] = nil
+		  -- save arena to file
+		  save_data()
+		  minetest.chat_send_player(name, param.." arena removed!")
+		  return
+		else
+		  -- return if name doesn't exist
+		  minetest.chat_send_player(name, param.." doesn't exist!")
+		end		
+	end,
+
+
+})
+
+minetest.register_chatcommand("spleef_list", {
+	params = "", 
+	description = "List arenas.",
+	func = function(name)
+		local arenaStrings = {}
+		for key, value in pairs(spleef.arena) do
+		  table.insert(arenaStrings, key)
+		 end
+		if #arenaStrings == 0 then
+			return true, "No spleef arenas."
+		end
+		return true, table.concat(arenaStrings, "\n")
+	end,
+})
+
 
 })
 
