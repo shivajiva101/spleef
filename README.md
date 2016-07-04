@@ -23,8 +23,12 @@ spleef_button
 
 Useage:
 
-Build your arena making sure you only use spleef_black and spleef_white for the floor. use /spleef_pos set to mark the floor area and then use /spleef_add <name> to save the arena. Place a spleef_button to show a form and add the name you used when adding the arena, press save and then punching the button it will reset the arena floor.
+Build your arena making sure you only use spleef_black and spleef_white for the floor. use /spleef_pos set to mark the floor area and then use /spleef_add <name> to save the arena. Place a spleef_button to show a form and add the same name used when adding the arena, press save, then punching the button will reset the arena floor.
 
 Todo:
 
 Add more spleef nodes, add pressure pad to revoke/grant privs
+
+All textures in this project are licensed under the CC-BY-SA 3.0
+Button textures and button sounds by jeija
+Position marker textures from WorldEdit mod by Uberi
