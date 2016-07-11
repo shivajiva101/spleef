@@ -1,7 +1,7 @@
 # spleef
 A Minetest mod for creating spleef arenas by shivajiva101@hotmail.com
 
-This mod is aimed at admins with the server priv for creating spleef arenas, it provides 2 nodes that dig immediately with no return node. A method to select and add the spleef floor to the arena list and a button for resetting the floor using a form to  allow the placer to input the arena it resets.
+This mod is aimed at admins with the server priv for creating spleef arenas, it provides 15 nodes that dig immediately with no return node. A method to select and add the spleef floor to the arena list and a button for resetting the floor using a form to  allow the placer to input the arena it resets.
 
 Commands:
 
@@ -29,4 +29,5 @@ Todo: Add more spleef nodes, add pressure pad to revoke/grant privs
 
 All textures in this project are licensed under the CC-BY-SA 3.0
 Button textures and button sounds by jeija
+Wool texture by Cisoun
 Position marker textures from WorldEdit mod by Uberi
