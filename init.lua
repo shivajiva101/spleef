@@ -2,6 +2,23 @@
 
 spleef = {}
 spleef.arena = {}
+spleef.colours = {
+	{"white",      "White"},
+	{"grey",       "Grey"},
+	{"black",      "Black"},
+	{"red",        "Red"},
+	{"yellow",     "Yellow"},
+	{"green",      "Green"},
+	{"cyan",       "Cyan"},
+	{"blue",       "Blue"},
+	{"magenta",    "Magenta"},
+	{"orange",     "Orange"},
+	{"violet",     "Violet"},
+	{"brown",      "Brown"},
+	{"pink",       "Pink"},
+	{"dark_grey",  "Dark Grey"},
+	{"dark_green", "Dark Green"},
+}
 
 -- Load files
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/pos.lua");
@@ -216,35 +233,24 @@ minetest.register_node("spleef:button_on", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
--- white block
-minetest.register_node("spleef:spleef_block_white", {
-	description = "White Spleef Block",
-	drawtype = "glasslike",
-	range = 12,
-	visualscale = 1.0,
-	paramtype = "light",
-	sunlight_propogates = false,
-	walkable = true,
-	tiles = {"spleef_white.png"},
-	drop = "",
-	sounds = default.node_sound_glass_defaults(),
-	groups = {dig_immediate=3, not_in_creative_inventory=1}
+-- register nodes
+for _, row in ipairs(spleef.colours) do
+	local name = row[1]
+	local desc = row[2]
+	-- Node Definition
+	minetest.register_node("spleef:spleef_block_"..name, {
+		description = desc.." Spleef Block",
+		range = 15,
+		paramtype = "light",
+		sunlight_propogates = false,
+		walkable = true,
+		tiles = {"wool_"..name..".png"},
+		is_ground_content = false,
+		groups = {dig_immediate=3, not_in_creative_inventory=1},
+		sounds = default.node_sound_glass_defaults(),
+		drop = "",
 	})
-
--- black block
-minetest.register_node("spleef:spleef_block_black", {
-	description = "Black Spleef Block",
-	drawtype = "glasslike",
-	range = 12,
-	visualscale = 1.0,
-	paramtype = "light",
-	sunlight_propogates = false,
-	walkable = true,
-	tiles = {"spleef_black.png"},
-	drop = "",
-	sounds = default.node_sound_glass_defaults(),
-	groups = {dig_immediate=3, not_in_creative_inventory=1}
-	})
+end	
 
 -- Save & load functions
 function save_data()
