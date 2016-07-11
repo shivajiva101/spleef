@@ -28,6 +28,9 @@ Note: The button code is copied from mesecons wall button, position setting is c
 Todo: Add more spleef nodes, add pressure pad to revoke/grant privs
 
 All textures in this project are licensed under the CC-BY-SA 3.0
+
 Button textures and button sounds by jeija
-Wool texture by Cisoun
+
+Wool textures by Cisoun
+
 Position marker textures from WorldEdit mod by Uberi
