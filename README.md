@@ -21,7 +21,7 @@ spleef_button
 
 Useage:
 
-Build your arena making sure you only use spleef_[colour] for the floor. use /spleef_pos set to mark the floor area and then use /spleef_add <name> to save the arena. Place a spleef_button to show a form and add the same name used when adding the arena, press save, then punching the button will reset the arena floor.
+Build your arena with spleef_[colour] nodes for the floor. use /spleef_pos set to mark the floor area and then use /spleef_add <name> to save the arena. Place a spleef_button and right click to show it's form and add the same name used when adding the arena, press Proceed, once set punching the button resets the arena floor.
 
 Note: The button code is copied from mesecons wall button, position setting is copied from Areas mod which is copied from WorldEdit. The concept of a user resetable arena floor tied to a button isn't new either...ENJOY!
 
