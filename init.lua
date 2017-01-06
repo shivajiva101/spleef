@@ -176,7 +176,7 @@ minetest.register_node("spleef:button_off", {
       local name = sender:get_player_name()
       local game = fields.text
 
-      if not minetest.check_player_privs(name, {hub_admin = true}) then
+      if not minetest.check_player_privs(name, {server = true}) then
         return
       end
 
